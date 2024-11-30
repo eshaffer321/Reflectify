@@ -1,11 +1,13 @@
 from typing import Dict, List
-import openai
 import os
 import json
 from pydub import AudioSegment
 from dotenv import load_dotenv
 from file_tracker import ProcessedFileTracker
 from pathlib import Path
+from pipeline_manager import PipelineManager
+from audio_processor import AudioProcessor
+from transcription_processor import TranscriptionProcessor 
 from openai import OpenAI
 from openai.types.audio import TranscriptionCreateResponse
 
@@ -14,8 +16,7 @@ load_dotenv()
 
 # Define constants
 max_segment_size_mb = 25  # Maximum size per segment in MB
-output_dir = "audio_segments"
-include_fillers = "Umm, let me think like, hmm... Okay, here's what I'm, like, thinking."
+output_dir = "data/audio_segments"
 previous_context_window = 100
 
 os.makedirs(output_dir, exist_ok=True)
@@ -23,6 +24,7 @@ os.makedirs(output_dir, exist_ok=True)
 file_tracker = ProcessedFileTracker()
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
+# AUDIO PROCESSING
 def get_unprocessed_audio_files() -> List[Path]:
     with open('config.json', 'r') as f:
         result = json.load(f)
@@ -59,20 +61,19 @@ def split_audio_file(input_audio_file: Path, segment_length_ms: int) -> List[str
     
     return segments
 
-import json
+
 
 def transcribe_with_prompt(segment_path: str, previous_text: str) -> Dict:
     try:
         with open(segment_path, "rb") as audio_file:
-            prompt_text = f"{include_fillers} {previous_text}"
+            prompt_text = f"{previous_text}"
             response: TranscriptionCreateResponse = client.audio.transcriptions.create(
                 model="whisper-1",
                 file=audio_file,
-                prompt=prompt_text,
-                response_format="verbose_json"
+                prompt=prompt_text
             )
         # Ensure JSON is parsed correctly
-        return json.loads(response.json())  # Explicitly parse JSON string to a dictionary
+        return json.loads(response.model_dump_json())  # Explicitly parse JSON string to a dictionary
     except Exception as e:
         print(f"An error occurred during transcription of {segment_path}: {e}")
         return {}
@@ -121,10 +122,16 @@ def process_audio_file(input_audio_file: Path):
 
 
 def main():
-    unprocessed_files = get_unprocessed_audio_files()
-    for input_audio_file in unprocessed_files:
-        print(f"Beginning processing on {input_audio_file}")
-        process_audio_file(input_audio_file)
+    # unprocessed_files = get_unprocessed_audio_files()
+    # for input_audio_file in unprocessed_files:
+    #     print(f"Beginning processing on {input_audio_file}")
+    #     process_audio_file(input_audio_file)
+
+    PipelineManager(
+        AudioProcessor(max_segment_size_mb, output_dir),
+        TranscriptionProcessor(client, previous_context_window),
+        ProcessedFileTracker(),
+        output_dir).run()
 
 if __name__ == "__main__":
     main()

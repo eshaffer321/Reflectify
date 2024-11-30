@@ -3,3 +3,5 @@ venv/*
 .DS_Store
 __pycache__/*
 audio_segments/*
+data/*
+processed_files.json
