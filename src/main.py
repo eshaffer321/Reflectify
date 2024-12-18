@@ -1,15 +1,10 @@
-from typing import Dict, List
 import os
-import json
-from pydub import AudioSegment
 from dotenv import load_dotenv
 from file_tracker import ProcessedFileTracker
-from pathlib import Path
 from pipeline_manager import PipelineManager
 from audio_processor import AudioProcessor
 from transcription_processor import TranscriptionProcessor 
 from openai import OpenAI
-from openai.types.audio import TranscriptionCreateResponse
 
 # Load environment variables
 load_dotenv()
