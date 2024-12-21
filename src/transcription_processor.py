@@ -30,7 +30,6 @@ class TranscriptionProcessor:
         for segment in segments:
             print(f"Processing segment {segment}")
             transcription: Dict[str,str] = self.transcribe_with_prompt(segment, previous_text)
-            print(f'Transcription: {transcription}')
 
             if transcription:
                 transcription_data["text"] += transcription["text"]

@@ -1,3 +1,6 @@
 {
-    "input_directory": "/Users/erickshaffer/Music/Audio Hijack/"
+    "interview_directory": "/Users/erickshaffer/Music/Audio Hijack/",
+    "interview_output_directory": "data/interview",
+    "programming_directory": "/Users/erickshaffer/Music/Recordings/Prog/",
+    "programming_output_directory": "data/programming"
 }

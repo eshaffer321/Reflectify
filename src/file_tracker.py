@@ -52,20 +52,16 @@ class ProcessedFileTracker:
         self.data[str(filename)] = "processed"
         self._save_data()
 
-    def get_unprocessed_audio_files(self) -> List[Path]:
-        """Gets the list of unprocessed audio files from the input directory specified in the config file."""
-        # Load the configuration from config.json
-        with open(self.config_file_path, 'r') as f:
-            config = json.load(f)
-            input_directory_path = config['input_directory']
-            
-            dir_path = Path(input_directory_path)
-            if not dir_path.exists():
-                raise FileNotFoundError(f"Input directory '{input_directory_path}' does not exist.")
+    def get_unprocessed_audio_files(self, input_directory_path) -> List[Path]:
 
-            # Return a list of unprocessed files
-            unprocessed_files = [
-                file_path for file_path in dir_path.iterdir()
-                if file_path.is_file() and not self.is_processed(file_path)
-            ]
-            return unprocessed_files
+        dir_path = Path(input_directory_path)
+        if not dir_path.exists():
+            raise FileNotFoundError(f"Input directory '{input_directory_path}' does not exist.")
+
+        # Return a list of unprocessed files
+        unprocessed_files = [
+            file_path for file_path in dir_path.iterdir()
+            if file_path.is_file() and not self.is_processed(file_path)
+        ]
+        print(f'Found {len(unprocessed_files)} unprocessed audio file(s) in {input_directory_path}')
+        return unprocessed_files

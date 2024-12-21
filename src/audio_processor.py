@@ -11,7 +11,13 @@ class AudioProcessor:
         os.makedirs(self.output_dir, exist_ok=True)
 
     def calculate_segment_duration(self, input_audio_file: Path) -> int:
-        audio = AudioSegment.from_file(input_audio_file)
+        try:
+            audio = AudioSegment.from_file(input_audio_file)
+        except Exception as e:
+            print(f"Failed to calculated segment duration for {input_audio_file}")
+            print(e)
+            exit(1)
+
         file_size_bytes = os.path.getsize(input_audio_file)
         num_segments = max(1, file_size_bytes // (self.max_segment_size_mb * 1024 * 1024) + 1)
         return len(audio) // num_segments

@@ -11,10 +11,10 @@ load_dotenv()
 
 # Define constants
 max_segment_size_mb = 25  # Maximum size per segment in MB
-output_dir = "data/audio_segments"
+audio_segments_output_dir = "data/audio_segments"
 previous_context_window = 100
 
-os.makedirs(output_dir, exist_ok=True)
+os.makedirs(audio_segments_output_dir, exist_ok=True)
 
 file_tracker = ProcessedFileTracker()
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
@@ -22,10 +22,9 @@ client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 def main():
 
     PipelineManager(
-        AudioProcessor(max_segment_size_mb, output_dir),
+        AudioProcessor(max_segment_size_mb, audio_segments_output_dir),
         TranscriptionProcessor(client, previous_context_window),
-        ProcessedFileTracker(),
-        output_dir).run()
+        ProcessedFileTracker()).run()
 
 if __name__ == "__main__":
     main()
