@@ -30,7 +30,7 @@ class ProcessedFileTracker:
     def _save_data(self) -> None:
         """Saves the processed files data to JSON."""
         with open(self.file_path, "w") as f:
-            json.dump(self.data, f)
+            json.dump(self.data, f, indent=4)
 
     def is_processed(self, filename: Union[str, Path]) -> bool:
         """Checks if a file has been processed.
