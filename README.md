@@ -1,4 +1,34 @@
-# Reflectify
+# Reflectify 🛑 Project Sunset Notice (May 2025)
+
+This project has been **officially sunset** and is no longer maintained.  
+It remains public as a historical reference to a **personal interview reflection tool**  
+that helped automate transcription and review workflows.
+
+---
+
+## 🏆 What It Was
+
+Reflectify was designed to:
+- Transcribe recorded interview practice sessions using Whisper.
+- Help track performance over time.
+- Serve as a foundation for future in-app feedback and meta-analysis.
+
+While functional, this project has been **retired** in favor of better-integrated solutions like **Notion AI**.
+
+---
+
+## 🛠️ Key Technologies
+- Python
+- PyDub for audio segmentation
+- Whisper API for transcription
+
+---
+
+## ⚠️ Status
+This project is **no longer maintained or recommended for active use**.  
+It remains archived as a portfolio artifact.
+
+> Shipped. Learned. Moving on.
 
 Reflectify is a tool designed to help you reflect on and iterate upon your interview practice. It automates the process of transcribing recorded interview sessions and sets the groundwork for tracking your performance over time. This project is a work in progress with plans for more advanced features, such as in-app feedback and meta-analysis.
 
